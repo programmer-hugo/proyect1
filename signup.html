@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse</title>
+    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -50,33 +53,78 @@
     <form id="registrationForm">
         <h2>Registrarse</h2>
         <input type="text" id="username" placeholder="Usuario" required>
+        <input type="email" id="email" placeholder="Correo" required>
         <input type="password" id="password" placeholder="Contraseña" required>
+        <input type="password" id="confirm-Password" placeholder="Confirmar contraseña" required>
+        <input type="phone" id="phone" placeholder="Teléfono" required>
+        <input type="phone" id="confirm-Phone" placeholder="Confirmar Teléfono" required>
         <button type="submit">Registrarse</button>
-        <p>O <a href="signin.html">Iniciar Sesión</a></p>
+        <p>O <a href="confirm-email.html">Iniciar Sesión</a></p>
         <div id="errorMessage" class="error" style="display: none;"></div>
     </form>
 
     <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCfmqcPqZWjbHZNtKm_z9sqUYTVAulFWU0",
+            authDomain: "project-hugo01.firebaseapp.com",
+            projectId: "project-hugo01",
+            storageBucket: "project-hugo01.appspot.com",
+            messagingSenderId: "943595933842",
+            appId: "1:943595933842:web:cb868e6f38f143e714164b",
+            measurementId: "G-FTDFQT58DB"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
         const registrationForm = document.getElementById('registrationForm');
         const errorMessage = document.getElementById('errorMessage');
 
-        registrationForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevenir el envío del formulario
+        registrationForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
             const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phone').value;
+            const confirmPhone = document.getElementById('confirmPhone').value;
 
-            // Verificar si el usuario ya está registrado
-            if (localStorage.getItem(username)) {
-                errorMessage.textContent = 'El usuario ya está registrado.';
-                errorMessage.style.display = 'block';
-            } else {
-                // Guardar el nuevo usuario en localStorage
-                localStorage.setItem(username, password);
-                alert('Registro exitoso. ¡Bienvenido, ' + username + '!');
-                // Aquí puedes redirigir al usuario a otra página
-                window.location.href = 'index.html';
-                // window.location.href = 'pagina_principal.html';
+            try {
+                // Validaciones
+                if (password !== confirmPassword) {
+                    throw new Error('Las contraseñas no coinciden.');
+                }
+                if (phone !== confirmPhone) {
+                    throw new Error('Los teléfonos no coinciden.');
+                }
+
+                // Verificar si el usuario ya existe
+                const userDoc = await db.collection('users').doc(username).get();
+                if (userDoc.exists) {
+                    throw new Error('El usuario ya está registrado.');
+                }
+
+                // Registrar el usuario con Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Enviar correo de verificación
+                await user.sendEmailVerification();
+
+                // Guardar usuario en Firestore
+                await db.collection('users').doc(username).set({
+                    username: username,
+                    email: email,
+                    phone: phone,
+                    uid: user.uid // Guardar el UID de Firebase Auth
+                });
+
+                alert('Registro exitoso. Verifica tu correo para activar tu cuenta.');
+            } catch (error) {
+                errorMessage.textContent = error.message;
             }
         });
     </script>
