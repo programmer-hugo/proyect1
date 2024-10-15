@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form id="registrationForm">
+        <h2>Registrarse</h2>
+        <input type="text" id="username" placeholder="Usuario" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <button type="submit">Registrarse</button>
+        <div id="errorMessage" class="error" style="display: none;"></div>
+    </form>
+
+    <script>
+        const registrationForm = document.getElementById('registrationForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevenir el envío del formulario
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Verificar si el usuario ya está registrado
+            if (localStorage.getItem(username)) {
+                errorMessage.textContent = 'El usuario ya está registrado.';
+                errorMessage.style.display = 'block';
+            } else {
+                // Guardar el nuevo usuario en localStorage
+                localStorage.setItem(username, password);
+                alert('Registro exitoso. ¡Bienvenido, ' + username + '!');
+                // Aquí puedes redirigir al usuario a otra página
+                // window.location.href = 'pagina_principal.html';
+            }
+        });
+    </script>
+</body>
+</html>
