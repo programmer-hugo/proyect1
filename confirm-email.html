@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correo de Verificación Enviado</title>
+    <link rel="icon" href="https://abogados-elias-y-pena.github.io/Image2/logo.png" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            padding: 20px;
+        }
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 1.5em;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .envelope-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            fill: #22c55e;
+        }
+        .card-content {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .card-footer {
+            text-align: center;
+        }
+        .button {
+            background-color: white;
+            border: 1px solid #d1d5db;
+            color: #374151;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .button:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <svg class="envelope-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                Correo Enviado
+            </h2>
+        </div>
+        <div class="card-content">
+            <p>Hemos enviado un correo de verificación a tu dirección de email. Por favor, revisa tu bandeja de entrada y sigue las instrucciones para completar el proceso de verificación.</p>
+        </div>
+        <div class="card-footer">
+            <button class="button" onclick="redirigir()">Regresar a Inicio</button>
+        </div>
+    </div>
+
+    <script>
+        function redirigir() {
+            // Aquí iría la lógica para reenviar el correo de verificación
+            console.log("Redirigiendo...");
+        }
+    </script>
+</body>
+</html>
